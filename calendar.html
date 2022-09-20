@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<div>
+<canvas id="myCanvas" width="3000" height="400" style="border:1px solid #d3d3d3;" onclick="onClick(event)">
+Your browser does not support the HTML5 canvas tag.</canvas>
+<br><input type="number" id="dayToHighlite"><button type="button" onclick="hihglightDate()">Highlight</button>
+</div>
+
+<script src="./calendar_files/utils.js"></script>
+<script>
+function hihglightDate(){
+	let day = document.getElementById("dayToHighlite").value;
+	curYear.highliteDay(day);
+}
+
+function onClick(event){
+	day = curYear.calcDay(event.clientX, event.clientY);
+	curYear.highliteDay(day);
+	//alert(day);
+}
+
+var c = document.getElementById("myCanvas");
+var ctx = c.getContext("2d");
+const xTopLeft = 20, yTopLeft = 20, squareMargin = 3;
+
+curYear = new Year(new Date().getFullYear());
+curYear.draw();
+let now = new Date();
+let curDay = Math.floor((now - new Date(now.getFullYear(), 0, 1))/(1000*60*60*24));
+curYear.highliteDay(curDay);
+</script>
+
+
+</body>
+</html>
