@@ -52,10 +52,7 @@ class YearModel{
 	}
 
 	draw(){
-		this.days.forEach(myFunction);
-		function myFunction(item){
-			item.draw();
-		}
+		this.days.forEach(item => item.draw());
 	}
 
 	highliteDay(day){ //day - day number from the begining of the year
