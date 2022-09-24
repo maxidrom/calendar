@@ -1,28 +1,27 @@
 <!DOCTYPE html>
 <html>
 	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+	<script src="./calendar_files/yearmodel.js"></script>
+	<script src="./calendar_files/githubyearview.js"></script>
+	<script src="./calendar_files/sinyearview.js"></script>
 <body>
 
 <div>
-<canvas id="myCanvas" width="3000" height="400" style="border:1px solid #d3d3d3;" onclick="onClick(event)">
-Your browser does not support the HTML5 canvas tag.</canvas>
-<br><p id="demo">JavaScript can change HTML content.</p>
-<br><input type="number" id="dayToHighlite"><button type="button" onclick="hihglightDate()">Highlight</button>
+	<canvas id="myCanvas" width="3000" height="400" style="border:1px solid #d3d3d3;" 
+	onclick="curGithubYearView.onClick(event)">
+	Your browser does not support the HTML5 canvas tag.
+	</canvas>
+	<br>
+	<p id="demo">JavaScript can change HTML content.</p>
+	<br>
+	<input type="number" id="dayToHighlite"><button type="button" onclick="hihglightDate()">Highlight</button>
 </div>
 <div id="myPlot" style="width:100%;max-width:3000px;height:100%;max-height:1000px"></div>
 
-<script src="./calendar_files/utils.js"></script>
 <script>
 function hihglightDate(){
 	let day = document.getElementById("dayToHighlite").value;
 	curYear.highliteDay(day);
-}
-
-function onClick(event){
-	day = curYear.calcDay(event.clientX, event.clientY);
-	curYear.highliteDay(day);
-	curSinYearView.draw();
-	//alert(day);
 }
 
 var c = document.getElementById("myCanvas");
@@ -30,13 +29,12 @@ var ctx = c.getContext("2d");
 const xTopLeft = 20, yTopLeft = 20, squareMargin = 3;
 
 curYear = new YearModel(new Date().getFullYear());
-curYear.draw();
-let now = new Date();
-let curDay = Math.floor((now - new Date(now.getFullYear(), 0, 1))/(1000*60*60*24));
-curYear.highliteDay(curDay);
-//alert(curDay);
 
-//sin
+//github view
+curGithubYearView = new GithubYearView(curYear);
+curGithubYearView.draw();
+
+//sin view
 curSinYearView = new SinYearView(curYear);
 curSinYearView.draw();
 </script>
