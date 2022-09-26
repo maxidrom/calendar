@@ -15,8 +15,13 @@ class YearModel{
 
 		//highlight current day
 		let now = new Date();
-		let curDayNumber = Math.floor((now - new Date(now.getFullYear(), 0, 1))/(1000*60*60*24));
+		let curDayNumber = YearModel.convertToDayNumber(now);
 		this.days[curDayNumber] = !this.days[curDayNumber];
+	}
+
+	static convertToDayNumber(date){
+		const milisecondsInDay = 1000*60*60*24;
+		return Math.floor((date - new Date(date.getFullYear(), 0, 1))/milisecondsInDay);
 	}
 
 	toggleDay(day){ //day - day number from the begining of the year
