@@ -31,7 +31,8 @@ class YearModel{
 			//redraw views
 			this.views.forEach((view)=>view.draw());
 		}
-		xhttp.open("GET", "http://localhost:8080/index.js?year=" + year);
+		xhttp.open("GET", "http://localhost:8080/loadyear?year=" + year);
+		//xhttp.open("GET", "http://localhost:8080/?year=" + year);
 		xhttp.send();
 	}
 
@@ -43,6 +44,26 @@ class YearModel{
 	toggleDay(day){ //day - day number from the begining of the year
 		this.days[day] = !this.days[day];
 		this.views.forEach((view)=>view.draw());
+		if (this.days[day]) {
+			this.setDayOnServer(day);
+		} else {
+			this.deleteDayFromServer(day);
+		}
+	}
+
+	setDayOnServer(day){
+		//create Date based on this.#year and day
+		let date = new Date(this.#year, 0, day+1);
+		//call for http://localhost:8080/savedate?date=date
+		const xhttp = new XMLHttpRequest();
+		//xhttp.onload
+		xhttp.open("GET", "http://localhost:8080/savedate?date=" + date.getTime());
+		xhttp.send();
+
+	}
+
+	deleteDayFromServer(day){
+
 	}
 
 	leapYear(year)

@@ -29,7 +29,8 @@ class GithubYearView{
 		y -= c.getBoundingClientRect().top;
 		//if point is not inside of any day then return -1
 			let column 	= Math.floor((x - GithubYearView.xTopLeft)/(GithubYearView.cellSize + GithubYearView.squareMargin));
-			let innerX 	= (x - GithubYearView.xTopLeft)%(GithubYearView.cellSize + GithubYearView.squareMargin)*(GithubYearView.cellSize + GithubYearView.squareMargin); //xInner - x releated to nearest daysquare from the left side
+			//innerX - x releated to nearest daysquare from the left side
+			let innerX 	= (x - GithubYearView.xTopLeft)%(GithubYearView.cellSize + GithubYearView.squareMargin)*(GithubYearView.cellSize + GithubYearView.squareMargin);
 			let row 	= Math.floor((y - GithubYearView.yTopLeft)/(GithubYearView.cellSize + GithubYearView.squareMargin));
 			let innerY 	= (y - GithubYearView.yTopLeft)%(GithubYearView.cellSize + GithubYearView.squareMargin)*(GithubYearView.cellSize + GithubYearView.squareMargin);
 			//if(inside any day){
