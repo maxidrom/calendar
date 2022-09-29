@@ -1,54 +1,27 @@
 <!DOCTYPE html>
 <html>
-	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-	<script src="./calendar_files/yearmodel.js"></script>
-	<script src="./calendar_files/githubyearview.js"></script>
-	<script src="./calendar_files/sinyearview.js"></script>
-<body>
+	<head>
+		<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+		<script src="./calendar_files/yearmodel.js"></script>
+		<script src="./calendar_files/githubyearview.js"></script>
+		<script src="./calendar_files/sinyearview.js"></script>
+	</head>
+	<body>
+		<div><!--GitHub View-->
+			<canvas id="githubCanavas" width="1850" height="300" style="border:0px" 
+				onclick="curGithubYearView.onClick(event)">
+				Your browser does not support the HTML5 canvas tag.
+			</canvas>
+		</div>
+		<div id="myPlot" style="width:100%; max-width:3000px; height:100%; max-height:1600px"></div>
 
-<div>
-	<canvas id="myCanvas" width="3000" height="400" style="border:1px solid #d3d3d3;" 
-	onclick="curGithubYearView.onClick(event)">
-	Your browser does not support the HTML5 canvas tag.
-	</canvas>
-	<br>
-	<p id="demo">JavaScript can change HTML content.</p>
-	<br>
-	<input type="number" id="dayToHighlite"><button type="button" onclick="hihglightDate()">Highlight</button>
-</div>
-<div id="myPlot" style="width:100%;max-width:3000px;height:100%;max-height:1000px"></div>
+		<script>
+			var c = document.getElementById("githubCanavas");
+			var ctx = c.getContext("2d");
 
-<script>
-function hihglightDate(){
-	let day = document.getElementById("dayToHighlite").value;
-	curYear.highliteDay(day);
-}
-
-var c = document.getElementById("myCanvas");
-var ctx = c.getContext("2d");
-const xTopLeft = 20, yTopLeft = 20, squareMargin = 3;
-
-curYear = new YearModel(new Date().getFullYear());
-
-//github view
-curGithubYearView = new GithubYearView(curYear);
-curGithubYearView.draw();
-
-//sin view
-curSinYearView = new SinYearView(curYear);
-curSinYearView.draw();
-
-const xhttp = new XMLHttpRequest();
-xhttp.onload = function() {
-	let day = JSON.parse(this.responseText);
-    document.getElementById("demo").innerHTML = YearModel.convertToDayNumber(new Date(day.date));
-	curYear.toggleDay(YearModel.convertToDayNumber(new Date(day.date)));
-	console.log(day.date);
-	console.log(new Date(day.date));
-}
-xhttp.open("GET", "http://localhost:8080/index.js");
-xhttp.send();
-
-</script>
-</body>
+			curYear = new YearModel(new Date().getFullYear());
+			let curGithubYearView = new GithubYearView(curYear);
+			let curSinYearView = new SinYearView(curYear);
+		</script>
+	</body>
 </html>

@@ -1,6 +1,11 @@
 class GithubYearView{
+	static xTopLeft = 60;
+	static yTopLeft = 20;
+	static cellSize = 27;
+	static squareMargin = 6;
     yearModel;
     #days = [];
+	
 	constructor(yearModel){
 		this.yearModel = yearModel;
         this.yearModel.views.push(this);
@@ -23,10 +28,10 @@ class GithubYearView{
 		x -= c.getBoundingClientRect().left;
 		y -= c.getBoundingClientRect().top;
 		//if point is not inside of any day then return -1
-			let column 	= Math.floor((x - xTopLeft)/(Day.size + squareMargin));
-			let innerX 	= (x - xTopLeft)%(Day.size + squareMargin)*(Day.size + squareMargin); //xInner - x releated to nearest daysquare from the left side
-			let row 	= Math.floor((y - yTopLeft)/(Day.size + squareMargin));
-			let innerY 	= (y - yTopLeft)%(Day.size + squareMargin)*(Day.size + squareMargin);
+			let column 	= Math.floor((x - GithubYearView.xTopLeft)/(GithubYearView.cellSize + GithubYearView.squareMargin));
+			let innerX 	= (x - GithubYearView.xTopLeft)%(GithubYearView.cellSize + GithubYearView.squareMargin)*(GithubYearView.cellSize + GithubYearView.squareMargin); //xInner - x releated to nearest daysquare from the left side
+			let row 	= Math.floor((y - GithubYearView.yTopLeft)/(GithubYearView.cellSize + GithubYearView.squareMargin));
+			let innerY 	= (y - GithubYearView.yTopLeft)%(GithubYearView.cellSize + GithubYearView.squareMargin)*(GithubYearView.cellSize + GithubYearView.squareMargin);
 			//if(inside any day){
 				return (column*7 + row - this.yearModel.yearBeginsFrom);
 			//} else return -1;
@@ -38,15 +43,14 @@ class Day{
 	#y;
     #dayNumber;
     #yearView;
-	static size = 15;
-
+	
 	constructor(dayNumber, yearBeginsFrom, yearView){	//dayNumber in currect view starting from 0.
 		this.#dayNumber = dayNumber;
         this.#yearView = yearView;
         let column = Math.floor((yearBeginsFrom + dayNumber)/7);
 		let row = (yearBeginsFrom + dayNumber)%7;
-		this.#x = xTopLeft + column*(Day.size + squareMargin);
-		this.#y = yTopLeft + row*(Day.size + squareMargin);
+		this.#x = GithubYearView.xTopLeft + column*(GithubYearView.cellSize + GithubYearView.squareMargin);
+		this.#y = GithubYearView.yTopLeft + row*(GithubYearView.cellSize + GithubYearView.squareMargin);
 	}
 	
 	draw(){
@@ -59,8 +63,8 @@ class Day{
             ctx.lineWidth = 1;
         }
 		ctx.lineWidth = 2;
-        ctx.clearRect(this.#x, this.#y, Day.size, Day.size);
-        ctx.rect(this.#x, this.#y, Day.size, Day.size);
+        ctx.clearRect(this.#x, this.#y, GithubYearView.cellSize, GithubYearView.cellSize);
+        ctx.rect(this.#x, this.#y, GithubYearView.cellSize, GithubYearView.cellSize);
 		ctx.stroke();
 		ctx.mouseup
 	}
