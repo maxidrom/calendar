@@ -1,0 +1,1 @@
+print("Pidarasy jobanyje!");
