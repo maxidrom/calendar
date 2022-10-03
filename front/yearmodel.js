@@ -11,7 +11,7 @@ class YearModel{
 		let jan1 = new Date("January 1, " + year + " 12:00:00");
 		this.yearBeginsFrom = jan1.getDay()==0? 6:jan1.getDay()-1;
 		
-		//load dates from server
+		//load dates from server and initialize days array by this dates
 		const xhttp = new XMLHttpRequest();
 		xhttp.onload = ()=> {
 			let serverDates = JSON.parse(xhttp.responseText);
@@ -31,8 +31,8 @@ class YearModel{
 			//redraw views
 			this.views.forEach((view)=>view.draw());
 		}
-		xhttp.open("GET", "http://localhost:8080/loadyear?year=" + year);
-		//xhttp.open("GET", "http://localhost:8080/?year=" + year);
+		//xhttp.open("GET", "http://localhost:8080/loadyear?year=" + year);
+		xhttp.open("GET", loadDateScript + "?year=" + year);
 		xhttp.send();
 	}
 
@@ -53,13 +53,11 @@ class YearModel{
 
 	setDayOnServer(day){
 		//create Date based on this.#year and day
-		let date = new Date(this.#year, 0, day+1);
-		//call for http://localhost:8080/savedate?date=date
+		let date = new Date(this.#year, 0, day+1);		
 		const xhttp = new XMLHttpRequest();
 		//xhttp.onload
-		xhttp.open("GET", "http://localhost:8080/savedate?date=" + date.getTime());
+		xhttp.open("GET", saveDateScript + '?date=' + date.getTime());
 		xhttp.send();
-
 	}
 
 	deleteDayFromServer(day){
