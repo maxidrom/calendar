@@ -12,28 +12,35 @@ class YearModel{
 		this.yearBeginsFrom = jan1.getDay()==0? 6:jan1.getDay()-1;
 		
 		//load dates from server and initialize days array by this dates
+		let serverDates = this.loadDates(this.#year);
+		this.initializeDays(serverDates);
+
+		//highlight current day
+		let now = new Date();
+		let curDayNumber = YearModel.convertToDayNumber(now);
+		this.days[curDayNumber] = true;
+	}
+
+	loadDates(year) {
 		const xhttp = new XMLHttpRequest();
-		xhttp.onload = ()=> {
-			let serverDates = JSON.parse(xhttp.responseText);
-			console.log(serverDates);
-			for(let i=0; i < this.daysInYear; i++){
-				if(serverDates.find((day)=>{return YearModel.convertToDayNumber(new Date(day.date))==i}))					
-					this.days[i] = true;
-				else
-					this.days[i] = false;
-			}
-
-			//highlight current day
-			let now = new Date();
-			let curDayNumber = YearModel.convertToDayNumber(now);
-			this.days[curDayNumber] = true;
-
-			//redraw views
-			this.views.forEach((view)=>view.draw());
-		}
-		//xhttp.open("GET", "http://localhost:8080/loadyear?year=" + year);
-		xhttp.open("GET", loadDateScript + "?year=" + year);
+		xhttp.open("GET", loadDateScript + "?year=" + year, false);//TODO:extract loadDateScript into config.json
 		xhttp.send();
+		if (xhttp.status === 200){
+			return JSON.parse(xhttp.responseText);
+		}
+	}
+
+	initializeDays(datesArray){
+		for(let i=0; i < this.daysInYear; i++){
+			if(this.isDayInArray(i, datesArray))
+				this.days[i] = true;
+			else
+				this.days[i] = false;
+		}
+	}
+
+	isDayInArray(dayNumber, datesArray){//datesArray: [{date, mark}]
+		datesArray.find((day)=>{return YearModel.convertToDayNumber(new Date(day.date))==dayNumber})
 	}
 
 	static convertToDayNumber(date){
