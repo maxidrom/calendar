@@ -40,12 +40,13 @@ class YearModel{
 	}
 
 	isDayInArray(dayNumber, datesArray){//datesArray: [{date, mark}]
-		datesArray.find((day)=>{return YearModel.convertToDayNumber(new Date(day.date))==dayNumber})
+		return datesArray.find((day)=>{return YearModel.convertToDayNumber(new Date(day.date))==dayNumber});
 	}
 
 	static convertToDayNumber(date){
 		const milisecondsInDay = 1000*60*60*24;
-		return Math.floor((date - new Date(date.getFullYear(), 0, 1))/milisecondsInDay);
+		let dayNumber = Math.floor((date - new Date(date.getFullYear(), 0, 1))/milisecondsInDay);
+		return dayNumber;
 	}
 
 	toggleDay(day){ //day - day number from the begining of the year
@@ -59,15 +60,14 @@ class YearModel{
 	}
 
 	setDayOnServer(day){
-		//create Date based on this.#year and day
-		let date = new Date(this.#year, 0, day+1);		
+		let date = new Date(this.#year, 0, day+1);
 		const xhttp = new XMLHttpRequest();
 		//xhttp.onload
 		xhttp.open("GET", saveDateScript + '?date=' + date.getTime());
 		xhttp.send();
 	}
 
-	deleteDayFromServer(day){
+	deleteDayFromServer(day){//TODO:
 
 	}
 
