@@ -5,7 +5,9 @@
 		<script src="./config.js"></script>
 		<script src="./yearmodel.js"></script>
 		<script src="./githubyearview.js"></script>
+		<script src="./githubsvgyearview.js"></script>
 		<script src="./sinyearview.js"></script>
+		<script src="./jscolor.js"></script>
 	</head>
 	<body>
 		<div><!--GitHub View-->
@@ -14,17 +16,25 @@
 				Your browser does not support the HTML5 canvas tag.
 			</canvas>
 		</div>
+		
+		<!--GitHub Svg View-->
+		<div id="githubsvg"></div>
+		
+		<!--Sin View-->
 		<div id="myPlot" style="width:100%; max-width:3000px; height:100%; max-height:1600px"></div>
 
 		<script>
 			var c = document.getElementById("githubCanavas");
 			var ctx = c.getContext("2d");
-
 			curYear = new YearModel(new Date().getFullYear());
 			let curGithubYearView = new GithubYearView(curYear);
 			curGithubYearView.draw();
+			
 			let curSinYearView = new SinYearView(curYear);
 			curSinYearView.draw();
+
+			let svgCalendar = new GithubSvgYearView(curYear);
+			svgCalendar.draw();
 		</script>
 	</body>
 </html>
