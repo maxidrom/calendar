@@ -15,7 +15,8 @@ export default function saveDate(req, res) {
         let dateDate = new Date(Number(req.query.date));
         const dateDoc = {
             date: dateDate,
-            mark: "Some special day"
+            mark: "Some special day",
+            fillColor: req.query.colorFill
         }
         const result = await collection.insertOne(dateDoc);
         console.log(`A document was inserted with the _id: ${result.insertedId}`);
