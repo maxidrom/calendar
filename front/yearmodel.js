@@ -67,8 +67,11 @@ class YearModel{
 		xhttp.send();
 	}
 
-	deleteDayFromServer(day){//TODO:
-
+	deleteDayFromServer(day){
+		let date = new Date(this.#year, 0, day+1);
+		const xhttp = new XMLHttpRequest();
+		xhttp.open("GET", deleteDateScript + '?date=' + date.getTime());
+		xhttp.send();
 	}
 
 	leapYear(year)
