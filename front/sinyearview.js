@@ -23,7 +23,7 @@ class SinYearView{
 		// Generate values for trace2
 		var xValues2 = [];
 		var yValues2 = [];
-		this.yearModel.days.forEach((item, index)=>{
+		this.yearModel.days__.forEach((item, index)=>{
 			if(item){
 				for (var x = index; x <= index+1; x += 0.05) {
 					xValues2.push(x);
