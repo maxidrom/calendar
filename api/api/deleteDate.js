@@ -1,5 +1,7 @@
 //db.Days.deleteMany( { date: ISODate("2022-06-18T22:00:00.000Z") } )
 
+var config = require('./config.json');
+
 export default function deleteDate(req, res) {
     const { MongoClient, ServerApiVersion } = require('mongodb');
     const client = new MongoClient(

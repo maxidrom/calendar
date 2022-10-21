@@ -5,7 +5,7 @@ var deleteDateScript = "https://calendarapi.vercel.app/api/deleteDate.js";
 
 //gitHubSvg properties
 var cellSize = 27;
-var cellStyleDefault = "fill:#EBEDF0; stroke:#DFE1E4";
-var cellStyleDefaultHighlited = "fill:#00ED00; stroke:#DFE1E4";
+var cellStyleDefault = "fill:#EBEDF0; ";
+var cellStyleDefaultHighlited = "fill:#00ED00; ";
 var cellRounding = 5;
 var cellMarging = 6;

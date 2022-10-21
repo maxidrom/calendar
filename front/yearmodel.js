@@ -3,7 +3,6 @@ class YearModel{
 	year;
 	daysInYear;
 	yearBeginsFrom;
-	days__ = [];//depricated, replaced by days Map
 	//days = new Map();
 	serverDates = [];
 	views = [];
@@ -15,18 +14,12 @@ class YearModel{
 		this.yearBeginsFrom = jan1.getDay()==0? 6:jan1.getDay()-1;
 		
 		this.refreshModel();
-
-		//highlight current day
-		let now = new Date();
-		let curDayNumber = YearModel.convertToDayNumber(now);
-		this.days__[curDayNumber] = true;
 	}
 
 	refreshModel(){
 		//load dates from server and initialize days array by this dates
 		this.serverDates = this.loadDates(this.year);
 		console.dir(this.serverDates);
-		this.initializeDays();
 	}
 
 	loadDates(year) {
@@ -38,32 +31,23 @@ class YearModel{
 		}
 	}
 
-	initializeDays(){
-		let mongoDate;
-		for(let i=0; i < this.daysInYear; i++){
-			if(mongoDate = this.isDayInArray(i)){
-				this.days__[i] = true;
-			}
-			else
-				this.days__[i] = false;
-		}
-	}
-
-	isDayInArray(dayNumber){//datesArray: [{date, mark}]
-		return this.serverDates.find((day)=>{return YearModel.convertToDayNumber(new Date(day.date))==dayNumber});
+	isDaySpecial(dayNumber){//datesArray: [{date, mark}]
+		return this.serverDates.find(
+			(day)=>{return YearModel.convertToDayNumber(new Date(day.date))==dayNumber}
+		);
 	}
 
 	static convertToDayNumber(date){
 		const milisecondsInDay = 1000*60*60*24;
-		let dayNumber = Math.floor((date - new Date(date.getFullYear(), 0, 1))/milisecondsInDay);
+		let jan1 = new Date(date.getFullYear(), 0, 1, -12)
+		let dayNumber = Math.floor((date - jan1)/milisecondsInDay);
 		return dayNumber;
 	}
 
 	toggleDay(day){ //day - day number from the begining of the year
-		if (!this.days__[day]) {
+		if (!this.isDaySpecial(day)) {//if day wasn't highlighted
 			//adjust model with newly highlighted day
-			this.days__[day] = !this.days__[day];
-			let date = new Date(this.year, 0, day+1);
+			let date = new Date(this.year, 0, day+1, 8);
 			let fillColor = document.getElementById("colorPicker").value.substring(1);
 			this.serverDates.push({
 				date: date,
@@ -72,34 +56,33 @@ class YearModel{
 			});
 			this.views.forEach((view)=>view.draw());
 			this.setDayOnServer(day, fillColor);
+			this.refreshModel();
 		} else {
 			this.deleteDayFromServer(day);
+			this.refreshModel();
+			this.views.forEach((view)=>view.draw());
 		}
-		this.refreshModel();
+		//this.refreshModel();
 		//this.views.forEach((view)=>view.draw());
 	}
 
 	setDayOnServer(day, fillColor){
-		let date = new Date(this.year, 0, day+1);
+		let date = new Date(this.year, 0, day+1, 8);
 		const xhttp = new XMLHttpRequest();
 		let str = saveDateScript + '?date=' + date.getTime() + '&colorFill=' + fillColor;
-		xhttp.open("GET", str);
+		xhttp.open("GET", str, false);
 		xhttp.send();
 	}
 
 	deleteDayFromServer(day){
-		let date = new Date(this.#year, 0, day+1);
+		let date = new Date(this.year, 0, day+1, 8);
 		const xhttp = new XMLHttpRequest();
-		xhttp.open("GET", deleteDateScript + '?date=' + date.getTime());
+		xhttp.open("GET", deleteDateScript + '?date=' + date.getTime(), false);
 		xhttp.send();
 	}
 
 	leapYear(year)
 	{
   		return ((year % 4 == 0) && (year % 100 != 0)) || (year % 400 == 0);
-	}
-
-	dateHaveEvents(dayNumber){
-		return this.days__[dayNumber];
 	}
 }
