@@ -16,6 +16,15 @@ class GithubSvgYearView{
 
     draw(){
         let innerHTML;
+        let today = new Date();
+        today = YearModel.convertToDayNumber(
+            new Date(
+                today.getFullYear(),
+                today.getMonth(),
+                today.getDate(),
+                8
+            )
+        );
         for(let i=0; i < this.yearModel.daysInYear; i++){
             let column = Math.floor((this.yearModel.yearBeginsFrom + i)/7);
             let row = (this.yearModel.yearBeginsFrom + i)%7;
@@ -31,7 +40,7 @@ class GithubSvgYearView{
                     cellStyle = cellStyleDefaultHighlited;
             }
             //highlight current date
-            if( YearModel.convertToDayNumber(new Date()) == i)
+            if( i == today )
                 cellStyle += "stroke:#DF0000"
             else
                 cellStyle += "stroke:#DFE1E4";
