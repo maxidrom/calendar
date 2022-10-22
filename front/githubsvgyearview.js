@@ -5,11 +5,12 @@ class GithubSvgYearView{
 		this.yearModel.views.push(this);
 
         document.getElementById("githubsvg").innerHTML = `
-            <h1 id="hoverDate">srgfs</h1>
-            Color: <input id="colorPicker" value="#3399FF80" data-jscolor="{}">
+            <input id="colorPicker" value="#3399FF80" data-jscolor="{}"><br>
+            <textarea id="eventText" rows="4" cols="50">Some special day.</textarea>
             <svg id="githubsvgCalendar"
-                x="50" width="1850" hight="300" style="border:1px" viewBox="-60 0 1850 300">
+                x="50" width="1850" hight="300" style="border:1px" viewBox="0 0 1850 240">
             </svg>
+            <h3 id="hoverDate" style="text-align:center"></h3>
         `;
 
 	}
@@ -33,7 +34,7 @@ class GithubSvgYearView{
             let date = new Date(this.yearModel.year, 0, i+1, 8);
             let cellStyle = cellStyleDefault;
             let mongoDate;
-            if(mongoDate = this.yearModel.isDaySpecial(i)){//if date is in serverdates draw it with highlited style
+            if(mongoDate = this.yearModel.getDate(i)){//if date is in serverdates draw it with highlited style
                 if(mongoDate.fillColor)
                     cellStyle = "fill:#" + mongoDate.fillColor + "; ";
                 else
@@ -60,13 +61,18 @@ class GithubSvgYearView{
     }
 
     showTip(id){
-        document.getElementById("hoverDate").innerHTML =
-            document.getElementById(id).getAttribute("data-date");
-        console.log(document.getElementById("colorPicker").value);
+        let hint;
+        let date = document.getElementById(id).getAttribute("data-date");
+        hint = date;
+        let mongoDoc = this.yearModel.getDate(date);
+        if (mongoDoc)
+            hint += `<br>${mongoDoc.mark}`;
+        document.getElementById("hoverDate").innerHTML = hint;
+        //console.log(document.getElementById("colorPicker").value);
     }
 
     onClick(date) {
-        let dayNumber = YearModel.convertToDayNumber(new Date(date));
+        let dayNumber = YearModel.convertToDayNumber(date);
         this.yearModel.toggleDay(dayNumber);
     }
 }

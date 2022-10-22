@@ -10,29 +10,32 @@
 		<script src="./jscolor.js"></script>
 	</head>
 	<body>
-		<!--GitHub View-->
+		<!--GitHub View
 		<div>
 			<canvas id="githubCanavas" width="1850" height="300" style="border:0px" 
 				onclick="curGithubYearView.onClick(event)">
 				Your browser does not support the HTML5 canvas tag.
 			</canvas>
 		</div>
+		-->
 		
 		<!--GitHub Svg View-->
 		<div id="githubsvg"></div>
 		
-		<!--Sin View-->
+		<!--Sin View
 		<div id="myPlot" style="width:100%; max-width:3000px; height:100%; max-height:1600px"></div>
+		-->
 
 		<script>
-			var c = document.getElementById("githubCanavas");
-			var ctx = c.getContext("2d");
 			curYear = new YearModel(new Date().getFullYear());
+
+			/*var c = document.getElementById("githubCanavas");
+			var ctx = c.getContext("2d");
 			let curGithubYearView = new GithubYearView(curYear);
-			curGithubYearView.draw();
+			curGithubYearView.draw();*/
 			
-			let curSinYearView = new SinYearView(curYear);
-			curSinYearView.draw();
+			/*let curSinYearView = new SinYearView(curYear);
+			curSinYearView.draw();*/
 
 			let svgCalendar = new GithubSvgYearView(curYear);
 			svgCalendar.draw();

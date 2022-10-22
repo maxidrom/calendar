@@ -1,1 +1,3 @@
-* delete date
+TODO:
+* new Date(8) refactor
+* saveDate with object (mongo document) instead of specific fields

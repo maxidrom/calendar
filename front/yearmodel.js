@@ -31,13 +31,25 @@ class YearModel{
 		}
 	}
 
-	isDaySpecial(dayNumber){//datesArray: [{date, mark}]
+	getDate(day){
+		if (typeof day == "string") {
+			day = YearModel.convertToDayNumber(day);
+		}
 		return this.serverDates.find(
-			(day)=>{return YearModel.convertToDayNumber(new Date(day.date))==dayNumber}
+			(mongoDoc)=>{
+				let mongoDayNumber = YearModel.convertToDayNumber(mongoDoc.date);
+				if ( mongoDayNumber == day )
+					return true;
+				else 
+					return false;
+			}
 		);
 	}
 
 	static convertToDayNumber(date){
+		if (typeof date == 'string') {
+			date = new Date(date);
+		}
 		const milisecondsInDay = 1000*60*60*24;
 		let jan1 = new Date(date.getFullYear(), 0, 1, -12)
 		let dayNumber = Math.floor((date - jan1)/milisecondsInDay);
@@ -45,17 +57,18 @@ class YearModel{
 	}
 
 	toggleDay(day){ //day - day number from the begining of the year
-		if (!this.isDaySpecial(day)) {//if day wasn't highlighted
+		if (!this.getDate(day)) {//if day wasn't highlighted
 			//adjust model with newly highlighted day
 			let date = new Date(this.year, 0, day+1, 8);
 			let fillColor = document.getElementById("colorPicker").value.substring(1);
+			let eventText = document.getElementById("eventText").value;
 			this.serverDates.push({
 				date: date,
-				mark: "Some special day",
+				mark: eventText,
 				fillColor: fillColor,
 			});
 			this.views.forEach((view)=>view.draw());
-			this.setDayOnServer(day, fillColor);
+			this.setDayOnServer(day, fillColor, eventText);
 			this.refreshModel();
 		} else {
 			this.deleteDayFromServer(day);
@@ -66,10 +79,13 @@ class YearModel{
 		//this.views.forEach((view)=>view.draw());
 	}
 
-	setDayOnServer(day, fillColor){
+	setDayOnServer(day, fillColor, eventText){
 		let date = new Date(this.year, 0, day+1, 8);
 		const xhttp = new XMLHttpRequest();
-		let str = saveDateScript + '?date=' + date.getTime() + '&colorFill=' + fillColor;
+		let str = saveDateScript + 
+			'?date=' + date.getTime() +
+			'&colorFill=' + fillColor +
+			'&eventText=' + eventText;
 		xhttp.open("GET", str, false);
 		xhttp.send();
 	}

@@ -15,7 +15,7 @@ export default function saveDate(req, res) {
         let dateDate = new Date(Number(req.query.date));
         const dateDoc = {
             date: dateDate,
-            mark: "Some special day",
+            mark: req.query.eventText,
             fillColor: req.query.colorFill
         }
         const result = await collection.insertOne(dateDoc);

@@ -56,7 +56,7 @@ class Day{
 	
 	draw(){
 		ctx.beginPath();
-        if(this.#yearView.yearModel.isDaySpecial(this.#dayNumber)){
+        if(this.#yearView.yearModel.getDate(this.#dayNumber)){
             ctx.strokeStyle = "blue";
             ctx.lineWidth = 2;
         } else {
