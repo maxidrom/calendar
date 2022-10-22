@@ -31,7 +31,7 @@ class GithubSvgYearView{
             let row = (this.yearModel.yearBeginsFrom + i)%7;
             let x = column*(cellSize + cellMarging);
             let y = row*(cellSize + cellMarging);
-            let date = new Date(this.yearModel.year, 0, i+1, 8);
+            let date = YearModel.convertToDate(this.yearModel.year, i);
             let cellStyle = cellStyleDefault;
             let mongoDate;
             if(mongoDate = this.yearModel.getDate(i)){//if date is in serverdates draw it with highlited style
@@ -55,7 +55,7 @@ class GithubSvgYearView{
                     onmouseover="svgCalendar.showTip('cell-${i}')"
                     onclick="svgCalendar.onClick('${date}')"
                 />
-            `;//onmouseover="svgCalendar.showTip('cell-${i}')"
+            `;
         }
         document.getElementById("githubsvgCalendar").innerHTML = innerHTML;
     }
@@ -68,7 +68,6 @@ class GithubSvgYearView{
         if (mongoDoc)
             hint += `<br>${mongoDoc.mark}`;
         document.getElementById("hoverDate").innerHTML = hint;
-        //console.log(document.getElementById("colorPicker").value);
     }
 
     onClick(date) {

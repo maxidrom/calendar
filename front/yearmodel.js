@@ -3,7 +3,6 @@ class YearModel{
 	year;
 	daysInYear;
 	yearBeginsFrom;
-	//days = new Map();
 	serverDates = [];
 	views = [];
 
@@ -56,10 +55,15 @@ class YearModel{
 		return dayNumber;
 	}
 
+	static convertToDate(year, dayNumber) {
+		let date = new Date(year, 0, dayNumber + 1, 8);
+		return date;
+	}
+
 	toggleDay(day){ //day - day number from the begining of the year
+		let date = YearModel.convertToDate(this.year, day);
 		if (!this.getDate(day)) {//if day wasn't highlighted
 			//adjust model with newly highlighted day
-			let date = new Date(this.year, 0, day+1, 8);
 			let fillColor = document.getElementById("colorPicker").value.substring(1);
 			let eventText = document.getElementById("eventText").value;
 			this.serverDates.push({
@@ -68,19 +72,16 @@ class YearModel{
 				fillColor: fillColor,
 			});
 			this.views.forEach((view)=>view.draw());
-			this.setDayOnServer(day, fillColor, eventText);
+			this.setDayOnServer(date, fillColor, eventText);
 			this.refreshModel();
 		} else {
-			this.deleteDayFromServer(day);
+			this.deleteDayFromServer(date);
 			this.refreshModel();
 			this.views.forEach((view)=>view.draw());
 		}
-		//this.refreshModel();
-		//this.views.forEach((view)=>view.draw());
 	}
 
-	setDayOnServer(day, fillColor, eventText){
-		let date = new Date(this.year, 0, day+1, 8);
+	setDayOnServer(date, fillColor, eventText){
 		const xhttp = new XMLHttpRequest();
 		let str = saveDateScript + 
 			'?date=' + date.getTime() +
@@ -90,8 +91,7 @@ class YearModel{
 		xhttp.send();
 	}
 
-	deleteDayFromServer(day){
-		let date = new Date(this.year, 0, day+1, 8);
+	deleteDayFromServer(date){
 		const xhttp = new XMLHttpRequest();
 		xhttp.open("GET", deleteDateScript + '?date=' + date.getTime(), false);
 		xhttp.send();
