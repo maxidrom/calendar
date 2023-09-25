@@ -1,3 +1,10 @@
 TODO:
 * new Date(8) refactor
 * saveDate with object (mongo document) instead of specific fields
+
+* Sun Calculator
+** Original Web Site
+*** http://suncalc.net/#/54.3413,18.6282,18/2023.09.25/12:34
+** Google drive
+*** https://drive.google.com/drive/folders/13F8T57sDDVWl-jAok9FBEKJiPmzNL7d-?usp=share_link
+**** calculator_files/suncalc.js
